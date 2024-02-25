@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+    head
+        script(src='//unpkg.com/d3')
+        script(src='//unpkg.com/polished@3.5.2/dist/polished.js')
+        script(src='//unpkg.com/globe.gl')
+
+body 
+div(id="globeViz")
+    script.
+        const locations=!{JSON.stringify(locations)};
+
+        const getTooltip = d => `
+            <div style="text-align: center">
+                <div><b>${d.country}</b>, ${d.region}</div>
+                <div>(${d.city})</div>
+                <div>Timezone: <em>${d.timezone}</em></div>
+                <div>Time Connected: <em>${d.createdAt}</em></div>
+            </div>
+            `;
+
+        const globe = Globe()
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+            .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+            .pointLat('lat')
+            .pointLng('lng')
+            .pointRadius(.12)
+            .labelLat('lat')
+            .labelLng('lng')
+            .labelDotRadius(0.12)
+            .pointLabel(getTooltip)
+            (document.getElementById('globeViz'));
+        globe.pointsData(locations)
+            .labelsData(locations);
+        
+  
+    
